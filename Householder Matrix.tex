@@ -1,0 +1,148 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+\usepackage{amsmath}  % Essential for matrices, aligned equations, and dots
+\usepackage{amssymb}  % Essential for symbols like \mathbb{R} (the real numbers set)
+\usepackage{bm}       % Essential for making bold math symbols (vectors/matrices)
+\setlength{\parindent}{0pt}
+\title{Linear algebra}
+\author{Vinh Nguyen Phu}
+\date{April 2026}
+
+\begin{document}
+\maketitle
+
+\section{Projection matrix} \hline
+\begin{center}
+    \includegraphics[width=1\linewidth]{q1.png}
+\end{center}
+
+
+\textbf{(1) Symmetric Matrix} \implies $T = T^T$
+\\
+$T = I_n - 2 \dfrac{vv^T}{v^Tv}$
+$T^T = \left(I_n - 2\dfrac{vv^T}{v^Tv}\right)^T=I_n^T- \dfrac{2}{v^Tv}(vv^T)^T=I_n-\dfrac{2}{v^Tv}vv^T \\ \implies T = T^T$ \\
+where $v^Tv$ is a scalar \\
+\newpage
+\textbf{(2) Orthogonal matrix} \implies $
+\begin{cases}
+    \text{Normal columns (length = 1)} \\
+    \text{All columns perpendicular}
+\end{cases}  $ \\
+
+Let x, y,... be T's columns \\
+Let $v^Tv=a$  \\
+\implies $x \cdot y=0, x \cdot x=1$ \\
+
+\implies $TT^T=T^2=I_n$ \\
+
+\implies $\left(I_n - 2\dfrac{vv^T}{v^Tv}\right) \left(I_n - 2\dfrac{vv^T}{v^Tv}\right)=I_n$ \\
+
+\implies $I_n - \dfrac{2}{a}vv^T+\dfrac{4}{a^2}v(v^Tv)v^T=I_n$ //
+
+\implies $I_n -\dfrac{4}{a}vv^T + \dfrac{4a}{a^2}vv^T = I_n \implies I_n = I_n$  \\ \\ 
+\textbf{(3) Find eigenvalues of T:}
+$Tx=\lambda x \quad \forall x \in \bm{R}^n$ \\
+- Prove $P = \dfrac{vv^T}{v^Tv}$ is a  projection matrix \\\
+
+\begin{cases}
+    $P=P^T$ \Rightarrow \text{Proven above} \\
+    
+    $P=P^2 \Rightarrow  d\frac{vv^Tvv^T}{a^2}=\dfrac{v(v^Tv)v^T}{a^2}=\dfrac{avv^T}{a^2}=\dfrac{vv^T}{a}$ \\
+\end{cases} \\
+
+- Prove $I_n - P$ is a projection matrix \\
+$(I_n-P)^2 = I_n^2 - 2I_nP + P^2 = I_n - 2P + P = I_n - P $ \\ \\
+- Prove  $I_n-2P$ is its own inverse: $T = T^-1 \implies T^2=I_n$ \\
+$(I_n-2P)^2=I_n^2 - 4I_nP + 4P^2=I_n$ \\\\
+- Find eigenvalues \\
+$Tx=\lambda x$ \\
+$\implies T^2x=T\lambda x$ \\
+$\implies I_nx=T\lambda x$ \\
+$\implies I_nx=\lambda (Tx)$ \\
+$\implies x = \lambda \lambda x \implies x = \lambda^2 x $ \\
+\implies
+\begin{cases}
+    $\lambda = 1 \\
+    \lambda = -1 $
+\end{cases} \\\\
+
+\textbf{(4) Find the determinant of T:} \\
+
+- Spectral Theorem: $T=Q\Lambda_T Q^T$\\
+Spectral Theorem is essentially a Change of basis, so\\
+$det(T)=det(\Lambda_T)$ \\ 
+$det(\Lambda_T) =\[\prod_{i=1}^{n} \lambda_i \]$ \\ \\ 
+
+- Let $2P = M$, find eigenvalues of M: \\
+
++ Eigenvalues of $vv^T$: \\
+$(vv^T)x=\lambda x \implies v(v^Tx)=\lambda x$ \\
+$\implies x\text{ must be some multiples of } v$ \\
+Let $x=cv$: \\
+$v(v^Tcv)=\lambda cv \implies v(v^Tv)c=\lambda cv \implies (v^Tv)v=\lambda v$ \\
+$\implies \lambda=v^Tv$ \\
+Since $Rank(vv^T)=1 \text{ (Rank preservation from $v$), }vv^T$ has: \\
+\begin{cases}
+    \text{1 eigenvalue: } $\lambda=v^Tv$ \\
+    \text{(n - 1) eigenvalues: } $\lambda=0$
+\end{cases} \\
+
++ Likewise, $P=\dfrac{vv^T}{v^Tv}$ has: \\
+\begin{cases}
+    \text{1 eigenvalue: } $\lambda=1$ \\
+    \text{(n - 1) eigenvalues: } $\lambda=0$
+\end{cases} \\
+
++ And therefore, $M=2P$ has:
+
+\begin{cases}
+    \text{1 eigenvalue: } $\lambda=2$ \\
+    \text{(n - 1) eigenvalues: } $\lambda=0$
+\end{cases} \\
+
++ Note that every vector in $\boldsymbol{R}^n$ is an eigenvector of $I_n$ and $I_n$ has $\lambda=1$: $I_nx=1x \ \forall x \in \boldsymbol{R}^n$ \\
+So, it is possible to diagonalize $I_n$ with any set of orthonormal basis: $I_n = QI_nQ^T$ \\
+Diagonalize $M=2P$, we have $M = Q\Lambda_MQ^T$
+$\implies I_n - M = QI_nQ^T - QMQ^T = Q(I_nQ^T - MQ^T) = Q(I_n - M)Q^T$ \\
+$\implies I_n - M = Q(I_n - M)Q^T = Q\Lambda_TQ^T$ \\
+$\Lambda_T = (I_n - M)$ has eigenvalues: \\
+\begin{cases}
+    $\lambda_1=1-2=-1$\\
+    $\lambda_{2,3,...n}=1-0=1$
+\end{cases} \\
+
+$\implies det(T)=det(\Lambda_T)=\prod_{i=1}^n \lambda i = -1 \times (n-1) \times 1 = -1$ \\ \\
+\newpage
+\textbf{(5) Determine $x$ linearly independent to $e_1$ so that $Tx = \alpha e_1$, express $v$ using $x$ and $e_1$} \\
+- Lines of thought: \\
+"$Tx = \alpha e_1$ means T must collapse x into the i-basis. Rashly, one might think this can only be achieved i.f.f T has only 1 non zero first row, the remaining n-1 rows are 0. But wait, this also means reducing T's Rank to 1, which is impossible, as T is full rank because $det(T) \neq 0$. \\
+Analyze again, remember that T is symmetric and orthogonal $T=T^-1$. Look at the duality, performing $Tx$ is the same as dotting v with every vector in T, because $T=T^T$. Except for the first dot product, the remaining $(n-1)$ dot products must be 0. So x must be perpendicular to all orthonormal vectors in T except for the first vector, meaning x must be parallel to it, or $x \parallel Te_1$. \\
+This is equivalent to $ x =\alpha Te_1$"\\\\
+- Prove that $ x =\alpha Te_1$:\\
+$Tx=\alpha e_1$ \\
+Multiply both side by T: \\
+$\implies I_n x = \alpha Te_1 \implies x = \alpha Te_1$ \\
+Expand the equation: \\
+$x = \alpha \left( I_n - 2\dfrac{vv^T}{v^Tv} \right)e_1$ \\
+$\implies x = \alpha e_1 - 2\alpha \dfrac{vv^T}{v^Tv} e_1$ \\
+$\implies x = \alpha e_1 - 2\alpha  \dfrac{v^Te_1}{v^Tv}v $ \\ 
+$\implies \alpha e_1 - x = \left( 2\alpha \dfrac{v^Te_1}{v^Tv} \right)v$ \\
+
+Let the constant term $\left( 2\alpha \dfrac{v^Te_1}{v^Tv} \right)$ be $c$: \\
+$\implies v = \dfrac{1}{c}(\alpha e_1 - x)$ \\
+$\implies v \propto (\alpha e_1 - x) \implies v \parallel (\alpha e_1 - x)$ \\
+\newpage
+Prove  T is variant to magnitude of $v$: \\
+$T^*=I_n - 2\dfrac{(bv)(bv)^T}{(bv)^T(bv)}=I_n-2\dfrac{b^2vv^T}{b^2v^Tv}=I_n-2\dfrac{vv^T}{v^Tv}=T$ \\
+Since T is invariant of the scale of $v$, choose $v$ such that \\ $v=\alpha e_1 -x$ \\
+
+Recall that $\alpha e_1 = Tx$ and T preserves transformed vector length \\ $\implies ||Tx||=||x||$ \\
+Likewise, $ \alpha||e_1||=||x||$ \\
+Since $e_1$ is unit vector, to satisfy $ ||\alpha e_1||=||x||$, $\alpha$ must: \\
+$\alpha = \pm||x||$
+
+} \\
+\begin{center}
+    \includegraphics[width=1\linewidth]{mirror.png}
+\end{center}
+\end{document}
