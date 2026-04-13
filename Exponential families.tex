@@ -1,0 +1,167 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+\usepackage{amsmath}  % Essential for matrices, aligned equations, and dots
+\usepackage{amssymb}  % Essential for symbols like \mathbb{R} (the real numbers set)
+\usepackage{bm}       % Essential for making bold math symbols (vectors/matrices)
+
+\title{Gamma distribution}
+\author{Nguyen Phu Vinh}
+\date{April 2026}
+
+\begin{document}
+
+\maketitle
+
+\section{Exponential Distribution}
+
+\textbf{How much time will pass before the first event happens?} \\
+
+Assume independence, constant average rate $\lambda$ (e.g. 3 events per year). \\
+Then, expected event per given time is: \\
+$E[\textbf{events in t}] = \lambda \times t$ \\
+Now look at infinitesimal slice of time $dt$, the expected events during that time $dt$ is: \\
+$E[\textbf{events in dt}] = \lambda dt$ \\ \\
+Because $dt$ is so microscopic, 2 events happening simultaneously during this interval of time is impossible, therefore the the outcome is strictly binary: either exactly \textbf{1} event happens, or \textbf{0} events happen. \\
+Note that for binary variable, the expected outcome of an event equals the probability of that same event \\
+\textit{(The expected value of a single fair coin flip is 0.5)}. \\
+Therefore, probability of \textbf{1} event in $dt$ is: \\
+$P[\textbf{1 event in $dt$}] = \lambda dt$ \\
+Examine the complement: \\
+$P[\textbf{0 events in $dt$}] = 1 - \lambda dt$ \\
+\text{Suppose the microscopic time interval } $dt = \dfrac{t}{n}$, where n is the number of slices: \\
+$\implies P\left[ \textbf{0 events in }\dfrac{t}{n}\right] = 1 - \dfrac{\lambda t}{n}$\\
+Therefore, knowing that events are \textbf{independent}, the probability that no events happen in all time slices (or in time t) is: \\
+$P\left[ \textbf{0 events in }{t}\right] = \left(1 - \dfrac{\lambda t}{n}\right)^n$\\
+Go back to infinitesimal world, to make this function continuous, we need limits: \\
+$\underset{n\rightarrow \infty}{lim} \left(1 - \dfrac{\lambda t}{n}\right)^n = e^{-\lambda t}$ \\
+\textit{(This is definition of the number $e$, and in general, the definition of exponential function)} 
+\newpage
+Take complement again, the accumulated probability of getting at least 1 event up to time t, or the CDF is: \\
+\textit{(To clarify, the complement of zero is at least once)} \\
+$F(t) = 1 - e^{-\lambda t}$ \\
+Differentiate the CDF to get the PDF: \\
+$f(t) = \dfrac{d}{dt}(1 - e^{-\lambda t}) =\lambda e^{-\lambda t}$ \\
+The probability of at least 1 event happening in a time interval [a, b] is: \\
+$P(a<T<b) = \int_{a}^{b} f(t)dt = \int_{a}^{b}\lambda e^{-\lambda t}dt$
+
+\maketitle
+
+\section{Poisson Distribution}
+\textbf{How many events happen in a fixed window of time?} \\
+
+Using the same line of logic up until we have binary outcomes: either exactly \textbf{1} event happens, or \textbf{0} events happen. \\
+We have: \\
+$P[\textbf{1 event in $dt$}] = p = \lambda dt = \dfrac{\lambda t}{n}$  \\
+$P[\textbf{0 events in $dt$}] = 1 - p = 1- \lambda dt = 1 -  \dfrac{\lambda t}{n}$  \\
+Now, instead of asking whether event happens at least once or does not happen at all (Exponential Distribution), we ask: what is the probability of getting exactly $k$ events across $n$ slices. \\
+\textit{(Note that each slice can carry at most 1 event, that is why Binomial is used in this case)} \\
+We use the Binomial Distribution formula: \\
+$P(X=k) = \binom{n}{k} p^k(1-p)^{n-k}$ \\
+
+Substitute $p = \dfrac{\lambda t}{n}$ \\
+$P(X=k) = \dfrac{n!}{k!(n-k)!} \left( \dfrac{\lambda t}{n} \right)^k\left( 1 - \dfrac{\lambda t}{n} \right)^{n-k}$ \\
+
+Factor $\dfrac{1}{k!}$ out and isolate terms with $n$ (to take limit $n \rightarrow \infty$ later): \\
+$P(X=k) = \dfrac{1}{k!} \ \dfrac{n(n-1)...(n-k)...1}{(n-k)(n-k-1)...1} \ \dfrac{(\lambda t)^k}{n^k} \ \left( 1 - \dfrac{\lambda t}{n} \right)^{n}  \left( 1 - \dfrac{\lambda t}{n} \right)^{-k}$ \\
+
+
+$P(X=k) = \dfrac{n(n-1)...(n-k+1)}{k!} \ \dfrac{(\lambda t)^k}{n^k} \ \left( 1 - \dfrac{\lambda t}{n} \right)^{n}  \left( 1 - \dfrac{\lambda t}{n} \right)^{-k}$ \\
+
+Commute position of $n^k$ and $k!$: \\
+$P(X=k) = \dfrac{n(n-1)...(n-k+1)}{n^k} \ \dfrac{(\lambda t)^k}{k!} \ \left( 1 - \dfrac{\lambda t}{n} \right)^{n}  \left( 1 - \dfrac{\lambda t}{n} \right)^{-k}$ \\
+
+Take limit $n \rightarrow \infty$: \\
+$P(X=k) = lim_{n\rightarrow \infty} \ \dfrac{n(n-1)...(n-k+1)}{n^k} \ \dfrac{(\lambda t)^k}{k!} \ \left( 1 + \dfrac{-\lambda t}{n} \right)^{n}  \left( 1 + \dfrac{-\lambda t}{n} \right)^{-k}$ \\
+
+
+\textbf{Examine each term:} \\ 
+- Term 1: \\
+$$lim_{n\rightarrow \infty} \ \dfrac{n(n-1)...(n-k+1)}{n^k} $$ \\
+There are exactly $k$ terms in the numerator, therefore, as $n \rightarrow \infty$, \\ $n(n-1)...(n-k+1)  = n^k$ \\
+$\implies lim_{n\rightarrow \infty} \ \dfrac{n(n-1)...(n-k+1)}{n^k} = \dfrac{n^k}{n^k} = 1$ \\
+- Term 2:
+$$\lim_{n \to \infty} \dfrac{(\lambda t)^k}{k!}$$ \\
+The term is constant, not dependent on $n$ \\
+$\implies \lim_{n \to \infty} \dfrac{(\lambda t)^k}{k!} = \dfrac{(\lambda t)^k}{k!}$ \\
+- Term 3:  \\
+$$\lim_{n \to \infty} \left(1 + \dfrac{-\lambda t}{n}\right)^n$$ \\
+This is the definition of an exponential function \\
+$\implies \lim_{n \to \infty} \left(1 + \dfrac{-\lambda t}{n}\right)^n = e^{-\lambda t}$ \\
+- Term 4: \\
+$$\lim_{n \to \infty} \left(1 + \dfrac{-\lambda t}{n}\right)^{-k}$$ \\
+The term $\dfrac{-\lambda t}{n} \rightarrow 0 $\\
+$\implies \lim_{n \to \infty} \left(1 + \dfrac{-\lambda t}{n}\right)^{-k} = (1 +0)^{-k} = 1$ \\
+
+\textbf{Piece all together} \\
+$$P(X=k) = \dfrac{(\lambda t)^k e^{-\lambda t}}{k!}$$
+
+\newpage
+\maketitle
+
+\section{Gamma Distribution}
+\textbf{The continuous waiting time for the $k$-th event.} \\
+
+Let $T$ be the continuous waiting time until the $k$-th event. Then, the probability that waiting time for $k$-th event is GREATER than $t$ is:\\
+$$P(T>t)$$ 
+Logically, if the $k$-th event does occur after $t$, strictly less than $k$ events must occur before $t$ (could be $0, 1,.., k-1$ events). \\
+The probability that less than $k$ events occur up to time $t$ is: \\
+$$P(\text{events up to time } t<k)$$ 
+Since these two views are identical, we have: \\
+$$P(T>t) = P(\text{events up to time } t<k)$$
+Since we are talking about probability of some events up to time $t$, it is only rational to think about Poisson distribution.  \\
+Recall that probability of having exactly $k$ events up to time $t$ is:
+$$P(X=k) = \dfrac{(\lambda t)^k e^{-\lambda t}}{k!}$$
+Look at the complement, the probability of NOT having exactly $k$ events up to time $t$ is:  
+$$\bar{P}(X=k) = 1- \dfrac{(\lambda t)^k e^{-\lambda t}}{k!}$$
+This includes all cases from $X = \{0,1,...,k-1,k,...,\infty\}$ \\
+However, we only desire $X<k$ cases. \\
+Let us look at a complement rule example: \\
+$P(X=0) + \bar{P}(X=0)  = 1$ \\
+The complement includes ALL cases that is not EXACTLY 0 events. \\
+$P(X=0) + [P(X=1) + P(X=2) + ...+P(X=\infty)] = 1 $\\
+Pull all the desired cases out of the sum: \\
+$[P(X=0) + P(X=1) +...+ P(X=k-1)] +[P(X=k)+ ...+P(X=\infty)] = 1$\\
+Simplify to: \\
+$$P(X<k)= 1 - P(X\geq k)$$
+Substitute with Poisson function: \\
+$$P(X < k) = \sum_{i=0}^{k-1} \dfrac{(\lambda t)^i e^{-\lambda t}}{i!}$$
+Substitute with the initial premise: $P(T>t) = P(\text{events up to time } t<k)$ \\ and to turn this into a function of time $t$ \\
+$$P(T>t) = \sum_{i=0}^{k-1} \dfrac{(\lambda t)^i e^{-\lambda t}}{i!}$$
+$\implies \textbf{The probability that waiting time for $k$-th event is GREATER than $t$}$ \\ \\
+\text{The complement is:} \\
+$$P(T \leq t) = 1 - \sum_{i=0}^{k-1} \dfrac{(\lambda t)^i e^{-\lambda t}}{i!}$$ \\
+$\implies \textbf{The probability that waiting time for $k$-th event is WITHIN $t$} $ \\
+\textit{Note: $P(T \leq t)$ is the CDF} \\ \\
+\textbf{Building the PDF} \\
+Let the CDF be $F(t)$, the derivative w.r.t $t$ is:
+$$\dfrac{dF(t)}{dt} =\dfrac{d}{dt} \left[1- \sum_{i=0}^{k-1} \dfrac{(\lambda t)^i e^{-\lambda t}}{i!}\right]$$
+Simplify term $(\lambda t)^i = \lambda^i t^i$:  \\
+$$\dfrac{dF(t)}{dt} =\dfrac{d}{dt} \left[1- \sum_{i=0}^{k-1} \dfrac{\lambda^i t^i e^{-\lambda t}}{i!}\right]$$
+
+Use product rule: $\dfrac{d}{dt}[u(t)v(t)] = u'(t)v(t) + u(t)v'(t)$
+
+$$\dfrac{dF(t)}{dt} =- \sum_{i=0}^{k-1} \dfrac{i\lambda^i t^{i-1} e^{-\lambda t} + (-\lambda)\lambda^i t^i e^{-\lambda t}}{i!}$$
+$$\dfrac{dF(t)}{dt} =- \sum_{i=0}^{k-1} \left( \dfrac{\lambda^i t^{i-1} e^{-\lambda t}}{(i-1)!} - \dfrac{\lambda^{i+1} t^i e^{-\lambda t}}{i!} \right)$$
+
+\newpage
+
+Expand the sum: \\
++) $i=0$ 
+$$0 - \underbrace{\dfrac{\lambda^1 t^0 e^{-\lambda t}}{0!}} $$
++) $i=1$ 
+$$\underbrace{ \dfrac{\lambda^1 t^0 e^{-\lambda t}}{0!}} - \dfrac{\lambda^2 t^1 e^{-\lambda t}}{1!}$$
++) $i=2$ 
+$$\dfrac{\lambda^2 t^1 e^{-\lambda t}}{1!} - \dfrac{\lambda^3 t^2 e^{-\lambda t}}{2!}$$
++) $i=k-1$
+$$\dfrac{\lambda^{k-1} t^{k-2} e^{-\lambda t}}{(k-2)!} - \dfrac{\lambda^k t^{k-1} e^{-\lambda t}}{(k-1)!}$$
+
+\textbf{Look at underbraced term, notice that the right term of $i=0$ equals to the left term of $i = 1$, this pattern persists throughout the entire sum} \\
+$\implies \text{The only remaining term is:}$
+$$\dfrac{dF(t)}{dt} = -\left(- \dfrac{\lambda^k t^{k-1} e^{-\lambda t}}{(k-1)!} \right)$$
+The PDF is:
+$$f(t) =  \dfrac{\lambda^k t^{k-1} e^{-\lambda t}}{(k-1)!} $$
+The area under the curve:
+$$F(t) = \int_0^t \dfrac{\lambda^k x^{k-1} e^{-\lambda x}}{(k-1)!} dx$$
+
+
+\end{document}
